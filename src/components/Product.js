@@ -45,7 +45,7 @@ export default function Product({ id, title, price, description, category, image
 
       {/* Price */}
       <div className="mb-5 text-lg font-bold text-green-700">
-        ${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}
+        {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}
       </div>
 
       {/* Prime Delivery */}
