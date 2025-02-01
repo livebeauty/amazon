@@ -1,7 +1,14 @@
-import Image from 'next/image';
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/20/solid';
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from "@heroicons/react/20/solid";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import {selectItems} from '../slices/basketSlice'
 
 export const Header = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const items = useSelector(selectItems)
   return (
     <header className="bg-[#131921]">
       {/* Top nav */}
@@ -10,6 +17,7 @@ export const Header = () => {
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
           <Image
             src="https://links.papareact.com/f90"
+            onClick={() => router.push('/')}
             width={150}
             height={40}
             alt="Amazon Logo"
@@ -31,8 +39,11 @@ export const Header = () => {
         {/* Right Side */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
           {/* Account */}
-          <div className="cursor-pointer hover:underline">
-            <p>Hello, Suryansh</p>
+          <div
+            onClick={!session ? signIn : signOut}
+            className="cursor-pointer hover:underline"
+          >
+            <p>Hello, {session?.user?.name || "Sign In"}</p> 
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>
 
@@ -43,20 +54,22 @@ export const Header = () => {
           </div>
 
           {/* Basket */}
-          <div className="relative flex items-center cursor-pointer hover:underline">
-            <span className="absolute -top-1 right-0 md:right-9 h-4 w-4 bg-yellow-400 text-center rounded-full text-black font-bold">4</span>
+          <div 
+           onClick={() => router.push('/checkout')}
+          className="relative flex items-center cursor-pointer hover:underline">
+            <span className="absolute -top-1 right-0 md:right-9 h-4 w-4 bg-yellow-400 text-center rounded-full text-black font-bold">{items.length}</span>
             <ShoppingCartIcon className="h-10" />
             <p className="font-extrabold md:text-sm">Basket</p>
           </div>
         </div>
       </div>
 
-      {/* Bottom nav (Add links if needed) */}
+      {/* Bottom nav */}
       <div className="flex items-center space-x-3 p-2 pl-6 bg-[#232F3E] text-white text-sm">
         <p className="cursor-pointer hover:underline flex items-center">
           <Bars3Icon className="h-6 mr-1" />
           All
-          </p>
+        </p>
         <p className="cursor-pointer hover:underline">Prime Video</p>
         <p className="cursor-pointer hover:underline">Amazon Business</p>
         <p className="cursor-pointer hover:underline">Today's Deals</p>

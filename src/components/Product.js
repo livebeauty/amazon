@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { CurrencyDollarIcon } from "@heroicons/react/20/solid";
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../slices/basketSlice";
+import Currency  from "react-currency-formatter"
+
 
 const MAX_RATING = 5;
 const MIN_RATING = 1;
 
 export default function Product({ id, title, price, description, category, image, rating }) {
+
   const randomRating = rating ?? Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING;
   const [finalRating, setFinalRating] = useState(randomRating);
   const [hasPrime, setHasPrime] = useState(false);
@@ -17,6 +21,22 @@ export default function Product({ id, title, price, description, category, image
     setHasPrime(Math.random() < 0.5);
     setIsClient(true); // Mark as client side
   }, []);
+
+  const dispatch = useDispatch()
+
+  const addItemToBasket = () => {
+    const product = {
+      id,
+      title,
+      price,
+      description,
+      category,
+      image,
+      rating,
+      hasPrime
+    }
+    dispatch(addToBasket(product))
+  }
 
   // Only render the part of the code with <svg> on the client side
   return (
@@ -45,7 +65,7 @@ export default function Product({ id, title, price, description, category, image
 
       {/* Price */}
       <div className="mb-5 text-lg font-bold text-green-700">
-        {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}
+      <Currency quantity={price} currency='USD'/>
       </div>
 
       {/* Prime Delivery */}
@@ -62,7 +82,9 @@ export default function Product({ id, title, price, description, category, image
       )}
 
       {/* Add to Cart Button */}
-      <button className="mt-auto p-2 text-xs md:text-xs bg-gradient-to-b from-yellow-200 to-yellow-400 border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 active:from-yellow-500">
+      <button 
+      onClick={addItemToBasket}
+      className="mt-auto p-2 text-xs md:text-xs bg-gradient-to-b from-yellow-200 to-yellow-400 border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 active:from-yellow-500">
         Add to Cart
       </button>
     </div>
