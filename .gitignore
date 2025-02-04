@@ -10,3 +10,5 @@ node_modules/
 node_modules/
 .next/
 .vercel/
+permission.json
+permission.json
