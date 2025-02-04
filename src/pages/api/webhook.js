@@ -6,13 +6,15 @@ const serviceAccount = require("../../../permission.json");
 
 // Secure a connection to FIREBASE from the the backend
 const app = !admin.apps.length
-  ? admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    })
-  : admin.app();
+            ? admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  })
+  : admin.app()
 
-  // console.log(app);
-  
+
+
+
+
 
 // Establish a connection to Stripe
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -57,7 +59,7 @@ export default async (req, res) => {
 
   
         // Fullfill the order
-        await fullfillOrder(session).then(() => res.status(200))
+        return fullfillOrder(session).then(() => res.status(200))
         .catch ((err) => res.status(400).send(`Webhook error: ${err.message}`))
   }
     }}

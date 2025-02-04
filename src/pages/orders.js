@@ -7,10 +7,6 @@ import Order from "../components/Order";
 
 
 
-
-
-
-
 const OrdersPage = ({ orders }) => {
     const { data: session } = useSession();
     console.log(orders);
