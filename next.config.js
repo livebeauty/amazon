@@ -12,10 +12,13 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "www.pngplay.com", // Make sure the full hostname is used
+        hostname: "www.pngplay.com", 
       },
     ],
   },
+  env:{
+    stripe_public_key: process.env.STRIPE_PUBLIC_KEY
+  }
 };
 
 module.exports = nextConfig;

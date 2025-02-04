@@ -48,7 +48,9 @@ export const Header = () => {
           </div>
 
           {/* Orders */}
-          <div className="cursor-pointer hover:underline">
+          <div
+           onClick={() => router.push('/orders')} 
+          className="cursor-pointer hover:underline">
             <p>Returns</p>
             <p className="font-extrabold md:text-sm">& Orders</p>
           </div>
